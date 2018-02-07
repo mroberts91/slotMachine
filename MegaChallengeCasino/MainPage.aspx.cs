@@ -45,10 +45,13 @@ namespace MegaChallengeCasino
 			// Calculate the winnings or losses.
 			CalculateSpinOutcome(playerBet, totalWinnings);
 			labelMoney.Text = $" ${(double)ViewState["PlayerMoney"]}";
+
+			// Reset memory values back to 0 for next pull
 			ViewState["Cherry"] = 0;
 			ViewState["Seven"] = 0;
 			ViewState["Bar"] = 0;
 
+			// Disable the pull lever button once you are broke
 			if ((double)ViewState["PlayerMoney"] <= 0)
 			{
 				buttonPullLever.Enabled = false;
@@ -147,13 +150,6 @@ namespace MegaChallengeCasino
 				ViewState["PlayerMoney"] = (double)ViewState["PlayerMoney"] - totalWinnings;
 				labelResult.Text = $"Unlucky... you lost {totalWinnings.ToString("C")}!";
 			}
-		}
-
-
-		// Input error message, but has never been used thus far
-		private void InputError()
-		{
-			labelResult.Text = "Error -- Invalid bet entry. Please verify entry for numeric value!";
 		}
 	}
 }
