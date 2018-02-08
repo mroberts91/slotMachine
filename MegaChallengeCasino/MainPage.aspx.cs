@@ -36,26 +36,36 @@ namespace MegaChallengeCasino
 			double playerBet;
 			double totalWinnings = 0;
 
-			// Display the Reels
-			DisplayReelImages();
-			
 			// Get the numeric value of the players bet
 			playerBet = (double.TryParse(textBoxPlaceBet.Text.Trim(), out double playerInput)) ? playerInput : 0;
-
-			// Calculate the winnings or losses.
-			CalculateSpinOutcome(playerBet, totalWinnings);
-			labelMoney.Text = $" ${(double)ViewState["PlayerMoney"]}";
-
-			// Reset memory values back to 0 for next pull
-			ViewState["Cherry"] = 0;
-			ViewState["Seven"] = 0;
-			ViewState["Bar"] = 0;
-
-			// Disable the pull lever button once you are broke
-			if ((double)ViewState["PlayerMoney"] <= 0)
+			
+			if (playerBet <= (double)ViewState["PlayerMoney"])
 			{
-				buttonPullLever.Enabled = false;
-				labelResult.Text = "You are out of money, Please try again later!";
+				// Display the Reels
+				DisplayReelImages();
+				
+				
+
+				// Calculate the winnings or losses.
+				CalculateSpinOutcome(playerBet, totalWinnings);
+				labelMoney.Text = $" ${(double)ViewState["PlayerMoney"]}";
+
+				// Reset memory values back to 0 for next pull
+				ViewState["Cherry"] = 0;
+				ViewState["Seven"] = 0;
+				ViewState["Bar"] = 0;
+
+				// Disable the pull lever button once you are broke
+				if ((double)ViewState["PlayerMoney"] <= 0)
+				{
+					buttonPullLever.Enabled = false;
+					labelResult.Text = "You are out of money, Please try again later!";
+				}
+			}
+			else
+			{
+				labelResult.Text = $"<h3 style=\"color:Red\">Error</h3> --  Your bet of {playerBet.ToString("C")} " +
+									"will not be covered by the money you still have";
 			}
 		}
 
